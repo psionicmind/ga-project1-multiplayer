@@ -69,8 +69,8 @@ class TowerOfHaoi {
         this.toTower=-1;
         this.showSolutionSteps = 0;
 
-        this.stopWatchStartTime=0; // to keep track of the start time
-        this.stopwatchInterval=null; // to keep track of the interval
+        this.stopWatchStartTime=undefined; // to keep track of the start time
+        this.stopwatchInterval=undefined; // to keep track of the interval
         this.elapsedPausedTime = 0; // to keep track of the elapsed time while stopped        
 
         // UI
@@ -137,11 +137,11 @@ function addPlayer(username, IsMainPlayer){
         generateTower(username, numberOfDisc); // data
         UiCreateDisc(username);                // ui
         loadAllDiscToTower1(username);         // ui
-        UiUpdateFeedback(username, "Welcome to Tower of Hanoi !")        
+        UiUpdateFeedback(username, "Welcome to Tower of Hanoi ! Control Keys are 1, 2 and 3")        
     }
     else{
         resetGame(username)
-        UiUpdateFeedback(username, "Welcome to Tower of Hanoi !")
+        UiUpdateFeedback(username, "Welcome to Tower of Hanoi ! Control Keys are z, x and c")
     }
 
 }
@@ -529,7 +529,10 @@ function UiLoadDiscColor(username){
 //********************************************************************************
 
 function UiUpdateFeedback(username, text){
-    players[username].feedback.innerHTML = `${username}: ${text}`;
+    if (text ===" ")
+        players[username].feedback.innerHTML = `${username}`;
+    else
+        players[username].feedback.innerHTML = `${username}: ${text}`;
 }
 
 function UiUpdateSteps(username, stepValue){
@@ -629,9 +632,12 @@ console.log(hanoiArray)
 function startStopwatch(username) {
     if (!players[username].stopwatchInterval) {
         players[username].stopWatchStartTime = new Date().getTime() - players[username].elapsedPausedTime; // get the starting time by subtracting the elapsed paused time from the current time
-        players[username].stopwatchInterval = setInterval(updateStopwatch(username), 1000); // update every second
+        // players[username].stopwatchInterval = setInterval(updateStopwatch(username), 1000); // update every second
+        players[username].stopwatchInterval = setInterval(updateStopwatch, 1000, username); // update every second
     }
 }
+
+
 
 function stopStopwatch(username) {
     clearInterval(players[username].stopwatchInterval); // stop the interval
@@ -687,7 +693,7 @@ function showSolution(username){
 // point from index.hmtl directly
 function resetGame(username){
     console.log("reset game")
-    players[username].elapsedPausedTime=0;
+    // players[username].elapsedPausedTime=0;
     players[username].stopWatchStartTime=0;
     resetStopwatch(username);
 
