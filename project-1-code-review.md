@@ -27,7 +27,7 @@
 | Be coded in a consistent manner.                                                                                   |    Yes     |                                |
 |                                                                                                                    |            |                                |
 | <h3>Other Deliverables</h3>                                                                                        | Complete?  | Comments (optional)            | 
-| Game is deployed online (Optional)                                                                                 |            |                                |
+| Game is deployed online (Optional)                                                                                 |    Yes     |                                |
 | The code for a working game that meets or exceeds the above technical requirements, built by you                   |    Yes     | Note: uses stopwatch as library|
 | Frequent commits dating back to the very beginning of the project; commit messages should be in the present tense  |    Yes     |                                |
 |                                                                                                                    |            |                                |
@@ -35,5 +35,5 @@
 | A description of your game. Background info of the game is a nice touch                                            |    Yes     |                                |
 | Screenshot(s): Images of your actual game                                                                          |    Yes     |                                |
 | Technologies Used: List of the technologies used, e.g., JavaScript, HTML, CSS, etc.                                |     3      | JavaScript, HTML, CSS          |
-| Getting Started: In this section include the link to your deployed game and any instructions you deem important    |            |                                |
+| Getting Started: In this section include the link to your deployed game and any instructions you deem important    |    Yes     |                                |
 | Next Steps: Planned future enhancements (icebox items)                                                             |    Yes     |                                |

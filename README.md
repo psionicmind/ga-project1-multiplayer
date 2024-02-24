@@ -3,15 +3,15 @@ ga-project1
 
 # Tower of Hanoi
 
-![alt text](https://github.com/psionicmind/ga-project1/blob/main/img/Images%20of%20your%20actual%20game.png?raw=true)
+![Single Player Game](https://github.com/psionicmind/ga-project1-multiplayer/blob/main/img/Images%20of%20your%20actual%20game1%20v1.png?raw=true)
 
-![with reset and show solution buttons](https://github.com/psionicmind/ga-project1/blob/main/img/Images%20of%20your%20actual%20game%20v2.png?raw=true)
+![Main player with side by side player](https://github.com/psionicmind/ga-project1-multiplayer/blob/main/img/Images%20of%20your%20actual%20game2%20v1.png?raw=true)
 
 # Inventor
 Édouard Lucas
 
 # Start Game Now!
-[Let's GO!](https://ga-project1-teal.vercel.app/)
+[Let's GO!](https://ga-project1-multiplayer.vercel.app/)
 
 # Games Description
 Tower of Hanoi is a mathematical game which consist of three sticks and a number of disc of various diameters.  The game begins with all discs stacked with the biggest disc at the bottom of the stick to the smallest disc at the top of the stick.
