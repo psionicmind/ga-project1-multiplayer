@@ -137,9 +137,11 @@ function addPlayer(username, IsMainPlayer){
         generateTower(username, numberOfDisc); // data
         UiCreateDisc(username);                // ui
         loadAllDiscToTower1(username);         // ui
+        UiUpdateFeedback(username, "Welcome to Tower of Hanoi !")        
     }
     else{
         resetGame(username)
+        UiUpdateFeedback(username, "Welcome to Tower of Hanoi !")
     }
 
 }
@@ -166,12 +168,15 @@ function AssignElementsToDerivedClass(username){
 
 // can have ui edit box and button to register Main player username
 function getMainPlayerName(){
-    return "kenchan";
+    return "ken";
 }
 const mainPlayerName = getMainPlayerName();
 
 function getSidebySidePlayerName(){
-    return "mark";
+    if (addSidePlayerNameEditBox.value ==="")
+        return addSidePlayerNameEditBox.placeholder;
+    else
+        return addSidePlayerNameEditBox.value;
 }
 
 let sideBySidePlayerName ="";
@@ -524,7 +529,7 @@ function UiLoadDiscColor(username){
 //********************************************************************************
 
 function UiUpdateFeedback(username, text){
-    players[username].feedback.innerHTML = `${text}`;
+    players[username].feedback.innerHTML = `${username}: ${text}`;
 }
 
 function UiUpdateSteps(username, stepValue){
