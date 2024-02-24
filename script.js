@@ -104,6 +104,9 @@ function addPlayer(username, IsMainPlayer){
         UiCreateDisc(username);                // ui
         loadAllDiscToTower1(username);         // ui
     }
+    else{
+        resetGame(username)
+    }
 
 }
 
