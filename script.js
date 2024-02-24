@@ -18,9 +18,14 @@ const movements={
 }
 
 const towerNumber={
-    Tower1:0,
-    Tower2:1,
-    Tower3:2,
+    tower1:0,
+    tower2:1,
+    tower3:2,
+}
+
+const typeOfPlayer={
+    sidebyside:0,
+    online:1,    
 }
 
 let numberOfDisc = 3;
@@ -30,6 +35,9 @@ let hanoiArray=[];
 let players = [];
 const maxSidebySidePlayers = 2;
 let currentNumberOfSidebySidePlayers = 1;
+let currentNumberOfPlayers = 1;
+let serverOrClient = undefined;//"server"; // "client"
+let IsStartNow = false;
 // x3
 // let htmlTowers = document.querySelectorAll('.tower')
 
@@ -39,6 +47,9 @@ let currentNumberOfSidebySidePlayers = 1;
 
 // let container = document.querySelectorAll(".container")[0]
 var baseContainer = document.getElementsByClassName("container")[0];
+
+var serverClientPanel = document.getElementsByClassName("serverclient-panel")[0];
+
 var addSidePlayerButton = document.getElementsByClassName("add-side-player")[0];
 var addSidePlayerNameEditBox = document.getElementsByClassName("add-side-player-name")[0];
 // let timer = document.querySelector(".timer")
@@ -68,6 +79,8 @@ class TowerOfHaoi {
         this.fromTower= -1;
         this.toTower=-1;
         this.showSolutionSteps = 0;
+        this.typeOfPlayer = typeOfPlayer.sidebyside;
+        this.winner = "";
 
         this.stopWatchStartTime=undefined; // to keep track of the start time
         this.stopwatchInterval=undefined; // to keep track of the interval
@@ -84,6 +97,12 @@ class TowerOfHaoi {
         this.discs = [];
     }
 }
+
+// Server Client Code
+
+
+
+
 
 // https://stackoverflow.com/questions/4427094/how-can-i-duplicate-a-div-onclick-event
 function UiDuplicateTowerOfHanoi(username){    
@@ -102,11 +121,10 @@ function startCountDown(){
                 countdownLabelNo1.style.color = "lime";
                 sleep(countDownWaitTime).then(()=>{ 
                     countdownLabelGo.style.color = "lime";   
-                    
+                    IsStartNow = true;
+
                     let keys = Object.keys(players)
                     for (let index = 0; index < keys.length; index++) {
-                        console.log(`keys[index]= ${keys[index]}`);                        
-                        console.log(`type of keys[index] = ${typeof(keys[index])}`);                        
                         startStopwatch(keys[index]);                    
                     }                    
                 });
@@ -191,8 +209,11 @@ addPlayer(mainPlayerName, true);
 function deletePlayer(username){
     // get container by id and remove
     document.getElementById(username).remove();
+    if (players[username].typeOfPlayer === typeOfPlayer.sidebyside){
+        currentNumberOfSidebySidePlayers--;
+    }
     delete players[username];    
-    currentNumberOfSidebySidePlayers--;
+    currentNumberOfPlayers--
 }
 
 function generateTower(username, discNum){
@@ -211,7 +232,7 @@ function generateTower(username, discNum){
 function t1tot2(username){
     if(rulesCheckIsMovedDiscSmallerThanTargetTower(username, players[username].tower1, players[username].tower2)){
         players[username].tower2.push(players[username].tower1.pop())    
-        UiMoveDisc(username, towerNumber.Tower1, towerNumber.Tower2)
+        UiMoveDisc(username, towerNumber.tower1, towerNumber.tower2)
         return true;
     }
     else
@@ -221,7 +242,7 @@ function t1tot2(username){
 function t1tot3(username){
     if(rulesCheckIsMovedDiscSmallerThanTargetTower(username, players[username].tower1, players[username].tower3)){
         players[username].tower3.push(players[username].tower1.pop())
-        UiMoveDisc(username, towerNumber.Tower1, towerNumber.Tower3)
+        UiMoveDisc(username, towerNumber.tower1, towerNumber.tower3)
         return true;
     }
     else
@@ -231,7 +252,7 @@ function t1tot3(username){
 function t2tot1(username){
     if(rulesCheckIsMovedDiscSmallerThanTargetTower(username, players[username].tower2, players[username].tower1)){    
         players[username].tower1.push(players[username].tower2.pop())
-        UiMoveDisc(username, towerNumber.Tower2, towerNumber.Tower1)        
+        UiMoveDisc(username, towerNumber.tower2, towerNumber.tower1)        
         return true;
     }
     else
@@ -241,7 +262,7 @@ function t2tot1(username){
 function t2tot3(username){
     if(rulesCheckIsMovedDiscSmallerThanTargetTower(username, players[username].tower2, players[username].tower3)){    
         players[username].tower3.push(players[username].tower2.pop())
-        UiMoveDisc(username, towerNumber.Tower2, towerNumber.Tower3)
+        UiMoveDisc(username, towerNumber.tower2, towerNumber.tower3)
         return true;
     }
     else
@@ -251,7 +272,7 @@ function t2tot3(username){
 function t3tot1(username){
     if(rulesCheckIsMovedDiscSmallerThanTargetTower(username, players[username].tower3, players[username].tower1)){    
         players[username].tower1.push(players[username].tower3.pop())
-        UiMoveDisc(username, towerNumber.Tower3, towerNumber.Tower1)        
+        UiMoveDisc(username, towerNumber.tower3, towerNumber.tower1)        
         return true;
     }
     else
@@ -261,7 +282,7 @@ function t3tot1(username){
 function t3tot2(username){
     if(rulesCheckIsMovedDiscSmallerThanTargetTower(username, players[username].tower3, players[username].tower2)){    
         players[username].tower2.push(players[username].tower3.pop())
-        UiMoveDisc(username, towerNumber.Tower3, towerNumber.Tower2)        
+        UiMoveDisc(username, towerNumber.tower3, towerNumber.tower2)        
         return true;
     }
     else
@@ -316,10 +337,22 @@ function movement(username, keyNumber){
     }
 }
 
+
+serverClientPanel.addEventListener('click', function(event){
+    console.log("radioButtons panel clicked");
+    serverOrClient = document.querySelector('input[name="serverclient"]:checked').value;
+    console.log(`radio button value = ${serverOrClient}`);
+    // H:\Other computers\My iMac\GoogleDrive\ga-project1-multiplayer\crowd-cheer-ii-6263.mp3
+    // const sound = new Audio();
+    // sound.src = "H:// Other computers// My iMac// GoogleDrive// ga-project1-multiplayer// crowd-cheer-ii-6263.mp3";
+    // sound.play();
+});
+
 addSidePlayerButton.addEventListener('click', function(event) {
     if (currentNumberOfSidebySidePlayers < maxSidebySidePlayers){
         sideBySidePlayerName = getSidebySidePlayerName();
         addPlayer(sideBySidePlayerName, false);
+        currentNumberOfPlayers++;
         currentNumberOfSidebySidePlayers++;
         if (currentNumberOfSidebySidePlayers === maxSidebySidePlayers){
             addSidePlayerNameEditBox.placeholder = "No more can be added";    
@@ -344,80 +377,59 @@ startCountDownButton.addEventListener('click', function(event) {
 // this eventlistener is only for player or players(2) playing on one browser.
 document.addEventListener('keydown', function(event) {
     // console.log(typeof (event.key)) // it is a string
-    if(event.key == 1) {
-        username = mainPlayerName;
-        UiUpdateFeedback(username, " ");
-        if (players[username].fromTower!=-1){
-            players[username].toTower = towerNumber.Tower1;
-            toTowerSelectedPostProcess(username);
-        }
-        else{
-            players[username].fromTower = towerNumber.Tower1;
-            fromTowerSelectedPostProcess(username, towerNumber.Tower1);
-        }
-    }
-    else if(event.key == 2) {
-        username = mainPlayerName;        
-        UiUpdateFeedback(username, " ");        
-        if (players[username].fromTower!=-1){
-            players[username].toTower = towerNumber.Tower2;
-            toTowerSelectedPostProcess(username);
-        }            
-        else{
-            players[username].fromTower = towerNumber.Tower2;
-            fromTowerSelectedPostProcess(username, towerNumber.Tower2);
-        }
-    }
-    else if(event.key == 3) {
-        username = mainPlayerName;        
-        UiUpdateFeedback(username, " ");        
-        if (players[username].fromTower!=-1){
-            players[username].toTower = towerNumber.Tower3;
-            toTowerSelectedPostProcess(username);
-        }            
-        else{
-            players[username].fromTower = towerNumber.Tower3
-            fromTowerSelectedPostProcess(username, towerNumber.Tower3);
-        }
-    }
-    if(event.key == 'z') {
-        username = sideBySidePlayerName;  
-        UiUpdateFeedback(username, " ");          
-        if (players[username].fromTower!=-1){
-            players[username].toTower = towerNumber.Tower1;
-            toTowerSelectedPostProcess(username);
-        }            
-        else{
-            players[username].fromTower = towerNumber.Tower1;
-            fromTowerSelectedPostProcess(username, towerNumber.Tower1);
-        }
-    }
-    else if(event.key == 'x') {
-        username = sideBySidePlayerName;  
-        UiUpdateFeedback(username, " ");  
-        if (players[username].fromTower!=-1){
-            players[username].toTower = towerNumber.Tower2;
-            toTowerSelectedPostProcess(username);
-        }            
-        else{
-            players[username].fromTower = towerNumber.Tower2;
-            fromTowerSelectedPostProcess(username, towerNumber.Tower2);
-        }
-    }
-    else if(event.key == 'c') {
-        username = sideBySidePlayerName;  
-        UiUpdateFeedback(username, " ");          
-        if (players[username].fromTower!=-1){
-            players[username].toTower = towerNumber.Tower3;
-            toTowerSelectedPostProcess(username);
-        }            
-        else{
-            players[username].fromTower = towerNumber.Tower3
-            fromTowerSelectedPostProcess(username, towerNumber.Tower3);
-        }
+    switch (event.key) {
+        case '1':
+        case '2':
+        case '3':
+            username = mainPlayerName;
+            eventKeyProcess(username, event.key);
+            break;
+        case 'z':
+        case 'x':
+        case 'c':
+            username = sideBySidePlayerName;  
+            eventKeyProcess(username, event.key);
+            break;
     }
 
 });
+
+function eventKeyProcess(username, eventKey){
+    if (currentNumberOfPlayers>1)
+        if (IsStartNow ==false){
+            UiUpdateFeedback(username, "Please wait for the start button to be press");
+            return;
+        }
+
+
+    if (players[username].winner==""){
+        switch (eventKey) {
+            case "z":
+                eventKey=1;
+                break;
+            case "x":
+                eventKey=2;
+                break;            
+            case "c":
+                eventKey=3;
+                break;    
+        }
+
+        UiUpdateFeedback(username, " ");
+        if (players[username].fromTower!=-1){
+            players[username].toTower = (+eventKey)-1;
+            toTowerSelectedPostProcess(username);
+        }
+        else{
+            players[username].fromTower = (+eventKey)-1;
+            fromTowerSelectedPostProcess(username, (+eventKey)-1);
+        }
+    }
+    else if (players[username].winner==username)
+        UiUpdateFeedback(username, "YOU won already!");
+    else                
+        UiUpdateFeedback(username, `${players[username].winner} won already!`);
+}
 
 function fromTowerSelectedPostProcess(username, towerNumber){
     // start as long as you have pressed on any tower
@@ -439,27 +451,33 @@ function toTowerSelectedPostProcess(username){
     players[username].toTower=-1;
     // consoleLogTowerInfo();
     if (checkWin(username)){
-        console.log("YOU WIN!");
-        stopStopwatch(username);
+        if (currentNumberOfPlayers===1)
+            stopStopwatch(username);
+        else{
+            for(player in players){
+                stopStopwatch(player);
+            }
+        }
+
     }
     return false;
 }
 
 
 function IsTowerEmpty(username, checkTower){
-    if ((checkTower ===towerNumber.Tower1) && (players[username].tower1.length==0)){
+    if ((checkTower ===towerNumber.tower1) && (players[username].tower1.length==0)){
         console.log(`nothing from that tower ${checkTower} `);
         players[username].fromTower=-1; //global variable is updated
         players[username].toTower=-1;   //global variable is updated         
         return true;
     }
-    else if ((checkTower ===towerNumber.Tower2) && (players[username].tower2.length==0)){
+    else if ((checkTower ===towerNumber.tower2) && (players[username].tower2.length==0)){
         console.log(`nothing from that tower ${checkTower} `);
         players[username].fromTower=-1;
         players[username].toTower=-1;            
         return true;
     }
-    if ((checkTower ===towerNumber.Tower3) && (players[username].tower3.length==0)){
+    if ((checkTower ===towerNumber.tower3) && (players[username].tower3.length==0)){
         console.log(`nothing from that tower ${checkTower} `);
         players[username].fromTower=-1;
         players[username].toTower=-1;            
@@ -477,6 +495,7 @@ function consoleLogTowerInfo(username){
 
 function checkWin(username){
     if ((players[username].tower2.length == numberOfDisc)|| (players[username].tower3.length == numberOfDisc)){
+        console.log("YOU WIN!");
         UiUpdateFeedback(username, "YOU WIN!");
         AnnounceWinnerFreezeGame(username);
         // app.say("You Win!")        
@@ -491,6 +510,8 @@ function AnnounceWinnerFreezeGame(username){
     // socket.emit("message", message);
     for (player in players){
         console.log(player)
+        players[player].winner = username; // this only set the data in mainplayer's computer.            
+
         if (player != username){
             UiUpdateFeedback(player, "You LOSE!");
         }
@@ -556,7 +577,7 @@ function loadAllDiscToTower1(username){
     }
 
     for (let index = 0; index < players[username].discs.length; index++) {
-        UiInsertDisc(username, players[username].discs[index], towerNumber.Tower1);    
+        UiInsertDisc(username, players[username].discs[index], towerNumber.tower1);    
     }
 }
 
@@ -622,8 +643,8 @@ function hanoiAlgo2(n, from_Tower, to_Tower, aux_Tower)
     // }, 1000)
 }
 
-// hanoiAlgo1(numberOfDisc, towerNumber.Tower1+1, towerNumber.Tower3+1, towerNumber.Tower2+1)
-hanoiAlgo2(numberOfDisc, towerNumber.Tower1+1, towerNumber.Tower3+1, towerNumber.Tower2+1)
+// hanoiAlgo1(numberOfDisc, towerNumber.tower1+1, towerNumber.tower3+1, towerNumber.tower2+1)
+hanoiAlgo2(numberOfDisc, towerNumber.tower1+1, towerNumber.tower3+1, towerNumber.tower2+1)
 console.log(hanoiArray)
 
 
@@ -690,9 +711,20 @@ function showSolution(username){
     }
 }
 
-// point from index.hmtl directly
+
 function resetGame(username){
-    console.log("reset game")
+    if (currentNumberOfPlayers>1){
+        for(player in players)
+            resetEachPlayer(player);
+    }
+    else
+        resetEachPlayer(username);
+
+    startCountDownButton.disabled = false;
+}
+
+function resetEachPlayer(username){
+        console.log("reset game")
     // players[username].elapsedPausedTime=0;
     players[username].stopWatchStartTime=0;
     resetStopwatch(username);
@@ -701,15 +733,15 @@ function resetGame(username){
     UiUpdateSteps(username, 0);
 
     for (let index = 0; index < players[username].tower1.length; index++) {
-        UiRemoveDisc(username, towerNumber.Tower1)        
+        UiRemoveDisc(username, towerNumber.tower1)        
     }
 
     for (let index = 0; index < players[username].tower2.length; index++) {
-        UiRemoveDisc(username, towerNumber.Tower2)        
+        UiRemoveDisc(username, towerNumber.tower2)        
     }
 
     for (let index2 = 0; index2 < players[username].tower3.length; index2++) {
-        UiRemoveDisc(username, towerNumber.Tower3)        
+        UiRemoveDisc(username, towerNumber.tower3)        
     }
     players[username].tower1=[];
     players[username].tower2=[];
