@@ -9,6 +9,15 @@
     vertical-align:middle;
   }
   
+  .start-countdown-button{
+    visibility: hidden;
+  }
+
+  .countdown-labelno3, .countdown-labelno2, .countdown-labelno1, .countdown-labelGo{
+    visibility: hidden;
+    color: grey;
+  }
+
   .add-side-player{
     margin-top: 20px;
     margin-bottom: 20px;

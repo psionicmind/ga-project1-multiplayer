@@ -4,14 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://cdn.socket.io/socket.io-3.0.0.js"></script>
+    <!-- <script src="https://cdn.socket.io/socket.io-3.0.0.js"></script> -->
     <link rel="stylesheet" href="style.css" />    
 
 </head>
 
 <body>
-    <button class="add-side-player">Add Side Player</button>
-    <input type="text" class="add-side-player-name" placeholder="Zyder"></input>
+    <div class="control-panel">
+        <button class="start-countdown-button">Start</button>
+        <label class="countdown-labelno3">3</label>
+        <label class="countdown-labelno2">2</label>
+        <label class="countdown-labelno1">1</label>
+        <label class="countdown-labelGo">Go!</label>
+        <button class="add-side-player">Add Side Player</button>
+        <input type="text" class="add-side-player-name" placeholder="Zyder"></input>
+    </div>
     <div class="container">
         <div class="race">
             <div class="timer" id="stopwatch">Timer 00:00</div>

@@ -25,6 +25,7 @@ const towerNumber={
 
 let numberOfDisc = 3;
 let discFlashWaitTime = 50;
+let countDownWaitTime = 200;
 let hanoiArray=[];
 let players = [];
 const maxSidebySidePlayers = 2;
@@ -41,6 +42,11 @@ var baseContainer = document.getElementsByClassName("container")[0];
 var addSidePlayerButton = document.getElementsByClassName("add-side-player")[0];
 var addSidePlayerNameEditBox = document.getElementsByClassName("add-side-player-name")[0];
 // let timer = document.querySelector(".timer")
+var startCountDownButton = document.getElementsByClassName("start-countdown-button")[0];
+var countdownLabelNo3 = document.getElementsByClassName("countdown-labelno3")[0];
+var countdownLabelNo2 = document.getElementsByClassName("countdown-labelno2")[0];
+var countdownLabelNo1 = document.getElementsByClassName("countdown-labelno1")[0];
+var countdownLabelGo = document.getElementsByClassName("countdown-labelGo")[0];
 
 const placeholderNames = ['Tom', 'Dick', 'Harry', 'Jack', 'Jill', 'SnowWhite', 'Pride', 'Greed', 'Lust', 'Envy', 'Gluttony', 'Wrath', 'Sloth'];
 
@@ -86,6 +92,31 @@ function UiDuplicateTowerOfHanoi(username){
     baseContainer.parentNode.appendChild(clone);    
 }
 
+function startCountDown(){
+    sleep(countDownWaitTime).then(() => { 
+        startCountDownButton.disabled = true;
+        countdownLabelNo3.style.color = "lime";
+        sleep(countDownWaitTime).then(()=>{ 
+            countdownLabelNo2.style.color = "lime";
+            sleep(countDownWaitTime).then(()=>{ 
+                countdownLabelNo1.style.color = "lime";
+                sleep(countDownWaitTime).then(()=>{ 
+                    countdownLabelGo.style.color = "lime";   
+                    
+                    let keys = Object.keys(players)
+                    for (let index = 0; index < keys.length; index++) {
+                        console.log(`keys[index]= ${keys[index]}`);                        
+                        console.log(`type of keys[index] = ${typeof(keys[index])}`);                        
+                        startStopwatch(keys[index]);                    
+                    }                    
+                });
+            });
+        });
+    });
+}
+
+
+
 function addPlayer(username, IsMainPlayer){
     players[username] = new TowerOfHaoi();
 
@@ -93,9 +124,12 @@ function addPlayer(username, IsMainPlayer){
         baseContainer.id = username;
     else{
         UiDuplicateTowerOfHanoi(username);
-        players[username].tower1 = structuredClone(players[mainPlayerName].tower1);
-        players[username].tower2 = structuredClone(players[mainPlayerName].tower2);
-        players[username].tower3 = structuredClone(players[mainPlayerName].tower3);
+        // players[username].tower1 = structuredClone(players[mainPlayerName].tower1);
+        // players[username].tower2 = structuredClone(players[mainPlayerName].tower2);
+        // players[username].tower3 = structuredClone(players[mainPlayerName].tower3);
+        players[username].tower1 = [...players[mainPlayerName].tower1];
+        players[username].tower2 = [...players[mainPlayerName].tower2];
+        players[username].tower3 = [...players[mainPlayerName].tower3];
     }
 
     AssignElementsToDerivedClass(username);// ui    
@@ -282,11 +316,25 @@ addSidePlayerButton.addEventListener('click', function(event) {
         sideBySidePlayerName = getSidebySidePlayerName();
         addPlayer(sideBySidePlayerName, false);
         currentNumberOfSidebySidePlayers++;
-        addSidePlayerNameEditBox.placeholder = placeholderNames[Math.floor(Math.random() * placeholderNames.length)];
-placeholderNames
+        if (currentNumberOfSidebySidePlayers === maxSidebySidePlayers){
+            addSidePlayerNameEditBox.placeholder = "No more can be added";    
+            addSidePlayerButton.disabled = true;
+        }
+        else
+            addSidePlayerNameEditBox.placeholder = placeholderNames[Math.floor(Math.random() * placeholderNames.length)];
+
+        // make race feature enabled
+        startCountDownButton.style.visibility = "visible";
+        countdownLabelNo3.style.visibility = "visible";
+        countdownLabelNo2.style.visibility = "visible";
+        countdownLabelNo1.style.visibility = "visible";
+        countdownLabelGo.style.visibility = "visible";        
     }
 });
 
+startCountDownButton.addEventListener('click', function(event) {
+    startCountDown();
+});
 
 // this eventlistener is only for player or players(2) playing on one browser.
 document.addEventListener('keydown', function(event) {
