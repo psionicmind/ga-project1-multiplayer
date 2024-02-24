@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.socket.io/socket.io-3.0.0.js"></script>
+    <link rel="stylesheet" href="style.css" />    
+
+</head>
+
+<body>
+    <button class="add-side-player">Add Side Player</button>
+    <input type="text" class="add-side-player-name" placeholder="Zyder"></input>
+    <div class="container">
+        <div class="race">
+            <div class="timer" id="stopwatch">Timer 00:00</div>
+            <button class="reset-game">Reset Game</button>
+            <button class="show-solution">Show Solution</button>
+            <div class="steps">Number of Steps:0</div>
+        </div>
+        <div class="hanoi-board">
+            <div class="tower">
+                <div class="stick"></div>
+                <div class="base-plate"></div>
+            </div>
+            <div class="tower">
+                <div class="stick"></div>
+                <div class="base-plate"></div>
+            </div>
+            <div class="tower">
+                <div class="stick"></div>
+                <div class="base-plate"></div>
+            </div>                        
+        </div>
+        <div class="feedback">
+            Welcome to Tower of Hanoi !
+        </div>
+    </div>
+  
+</body>
+<!-- <script type="module" src="script.js"></script>   -->
+<script src="script.js"></script>  
+</html>
