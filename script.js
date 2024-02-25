@@ -33,11 +33,13 @@ let discFlashWaitTime = 50;
 let countDownWaitTime = 200;
 let hanoiArray=[];
 let players = [];
-const maxSidebySidePlayers = 2;
+const maxSidebySidePlayers = 20;
 let currentNumberOfSidebySidePlayers = 1;
 let currentNumberOfPlayers = 1;
 let serverOrClient = undefined;//"server"; // "client"
 let IsStartNow = false;
+
+let browserPageZoomPc = 100;
 // x3
 // let htmlTowers = document.querySelectorAll('.tower')
 
@@ -183,6 +185,18 @@ function AssignElementsToDerivedClass(username){
         resetGame(username);
     });    
 }
+
+function resizeBrowserPageZoom(){
+    browserPageZoomPc *=  0.9;
+    if (browserPageZoomPc > 50){
+        document.body.style.zoom = `${browserPageZoomPc}%`;
+    }
+    else{
+        console.log("cannot reduce size anymore. too small.")
+    }
+}
+
+
 
 // can have ui edit box and button to register Main player username
 function getMainPlayerName(){
@@ -352,6 +366,17 @@ addSidePlayerButton.addEventListener('click', function(event) {
     if (currentNumberOfSidebySidePlayers < maxSidebySidePlayers){
         sideBySidePlayerName = getSidebySidePlayerName();
         addPlayer(sideBySidePlayerName, false);
+
+        // make race feature enabled
+        startCountDownButton.style.visibility = "visible";
+        countdownLabelNo3.style.visibility = "visible";
+        countdownLabelNo2.style.visibility = "visible";
+        countdownLabelNo1.style.visibility = "visible";
+        countdownLabelGo.style.visibility = "visible";        
+        
+        resizeBrowserPageZoom();
+    
+        // things to do after max side by side player is reached.
         currentNumberOfPlayers++;
         currentNumberOfSidebySidePlayers++;
         if (currentNumberOfSidebySidePlayers === maxSidebySidePlayers){
@@ -360,18 +385,11 @@ addSidePlayerButton.addEventListener('click', function(event) {
         }
         else
             addSidePlayerNameEditBox.placeholder = placeholderNames[Math.floor(Math.random() * placeholderNames.length)];
-
-        // make race feature enabled
-        startCountDownButton.style.visibility = "visible";
-        countdownLabelNo3.style.visibility = "visible";
-        countdownLabelNo2.style.visibility = "visible";
-        countdownLabelNo1.style.visibility = "visible";
-        countdownLabelGo.style.visibility = "visible";        
     }
 });
 
 startCountDownButton.addEventListener('click', function(event) {
-    startCountDown();
+    startCountDown();        
 });
 
 // this eventlistener is only for player or players(2) playing on one browser.
