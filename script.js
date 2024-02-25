@@ -28,6 +28,14 @@ const typeOfPlayer={
     online:1,    
 }
 
+const serverClientType={
+    server: "server",
+    client: "client",
+}
+let socket=undefined;
+let io=undefined;
+let http=undefined;
+
 let numberOfDisc = 3;
 let discFlashWaitTime = 50;
 let countDownWaitTime = 200;
@@ -51,6 +59,8 @@ let browserPageZoomPc = 100;
 var baseContainer = document.getElementsByClassName("container")[0];
 
 var serverClientPanel = document.getElementsByClassName("serverclient-panel")[0];
+var serverLabel = document.getElementsByClassName("server-label")[0];
+var clientEditBoxForServerIP = document.getElementsByClassName("client-IP")[0];
 
 var addSidePlayerButton = document.getElementsByClassName("add-side-player")[0];
 var addSidePlayerNameEditBox = document.getElementsByClassName("add-side-player-name")[0];
@@ -101,9 +111,70 @@ class TowerOfHaoi {
 }
 
 // Server Client Code
+function serverSetup(event){
+    // const serverIP = fetchYourOwnIP();
+    const serverIP = "192.168.0.109";
 
+    const ws = `ws://${serverIP}:8080`;
+    serverLabel.innerHTML += `  ${ws} `;
 
+    const http = require("http").createServer();
 
+    const io = require("socket.io")(http, {
+        cors: { origin: "*" },
+    });
+    
+    io.on("connection", (socket) => {
+        console.log("a user connected");
+        socket.on("message", (message) => {
+        console.log(message);
+        console.log("server received message: " + JSON.stringify(message));
+        io.emit(
+            "message",
+            // `${socket.id.substr(0, 2)} said ${JSON.stringify(message)}`
+            `${socket.id} said ${JSON.stringify(message)}`
+        );
+        });
+    });
+    
+    http.listen(8080, () => console.log("listening on http://localhost:8080"));        
+}
+
+function fetchYourOwnIP(cmd){
+    var process = require('child_process');
+    process.exec(cmd, function (err,stdout,stderr) {
+        if (err) {
+            console.log("\n"+stderr);
+        } else {
+            console.log(stdout);
+        }
+    });
+}
+
+function clientSetup (){
+    // const socket = io("ws://localhost:8080");
+    // const socket = io("ws://192.168.0.109:8080");// point to server ip address
+
+    const serverIP= clientEditBoxForServerIP.innerHTML;
+    socket = io(`ws://${serverIP}:8080`);
+
+    // receive message
+    socket.on("message", (text) => {
+      const el = document.createElement("li");
+      el.innerHTML = text;
+      console.log(`test=${text}`);
+      document.querySelector("ul").appendChild(el);
+    });
+    
+    // send out message using EMIT
+    document.querySelector("button").onclick = () => {
+      // const text = document.querySelector("input").value;
+      // socket.emit("message", text);
+      testjson= {"username":"king", "action": "move", "fromtower":1, "totower":2}
+      socket.username="wakaka";
+      socket.emit("message",testjson);
+    };
+}
 
 
 // https://stackoverflow.com/questions/4427094/how-can-i-duplicate-a-div-onclick-event
@@ -356,6 +427,11 @@ serverClientPanel.addEventListener('click', function(event){
     console.log("radioButtons panel clicked");
     serverOrClient = document.querySelector('input[name="serverclient"]:checked').value;
     console.log(`radio button value = ${serverOrClient}`);
+    
+    if (serverOrClient===serverClientType.server)
+        serverSetup();
+    else
+        clientSetup();
     // H:\Other computers\My iMac\GoogleDrive\ga-project1-multiplayer\crowd-cheer-ii-6263.mp3
     // const sound = new Audio();
     // sound.src = "H:// Other computers// My iMac// GoogleDrive// ga-project1-multiplayer// crowd-cheer-ii-6263.mp3";
