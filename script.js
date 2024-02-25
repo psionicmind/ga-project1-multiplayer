@@ -721,6 +721,10 @@ function resetGame(username){
         resetEachPlayer(username);
 
     startCountDownButton.disabled = false;
+    countdownLabelNo1.style.color = "grey";
+    countdownLabelNo2.style.color = "grey";
+    countdownLabelNo3.style.color = "grey";
+    countdownLabelGo.style.color = "grey";
 }
 
 function resetEachPlayer(username){
