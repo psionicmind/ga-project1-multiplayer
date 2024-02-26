@@ -21,8 +21,8 @@
 | Render a game in the browser                                                                                       |    Yes     |                                |
 | Include win/loss logic and render win/loss messages in HTML                                                        |    Yes     |                                |
 | Include separate HTML, CSS & JavaScript files                                                                      |    Yes     |                                |
-| Have properly indented HTML, CSS & JavaScript                                                                      |            |                                |
-| No remaining dead and/or commented out code                                                                        |            |                                |
+| Have properly indented HTML, CSS & JavaScript                                                                      |    Yes     |                                |
+| No remaining dead and/or commented out code                                                                        |    Yes     |                                |
 | Have functions and variables that are named sensibly                                                               |    Yes     |                                |
 | Be coded in a consistent manner.                                                                                   |    Yes     |                                |
 |                                                                                                                    |            |                                |
@@ -34,6 +34,6 @@
 | <b><i>A README.md file with these actions<i></b>                                                                   | Complete?  | Comments (optional)            |
 | A description of your game. Background info of the game is a nice touch                                            |    Yes     |                                |
 | Screenshot(s): Images of your actual game                                                                          |    Yes     |                                |
-| Technologies Used: List of the technologies used, e.g., JavaScript, HTML, CSS, etc.                                |     3      | JavaScript, HTML, CSS          |
+| Technologies Used: List of the technologies used, e.g., JavaScript, HTML, CSS, etc.                                |    Yes     | JavaScript, HTML, CSS          |
 | Getting Started: In this section include the link to your deployed game and any instructions you deem important    |    Yes     |                                |
 | Next Steps: Planned future enhancements (icebox items)                                                             |    Yes     |                                |
