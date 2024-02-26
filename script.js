@@ -1,13 +1,4 @@
-// Reference: https://www.youtube.com/watch?v=OUWFY1qY47Y by Adson Paulo Aug 30, 202
-
-// import {startStopwatch, stopStopwatch, stopWatchStartTime } from './helperClass/stopwatch.js';
-
-// const socket = io("ws://localhost:8080");
-// const socket = io("ws://192.168.0.109:8080");// point to server ip address
-
-
 // LOGIC
-// Shared variables among multiplayers
 const movements={
     t1tot2: 12,
     t1tot3: 13,
@@ -44,18 +35,10 @@ let players = [];
 const maxSidebySidePlayers = 20;
 let currentNumberOfSidebySidePlayers = 1;
 let currentNumberOfPlayers = 1;
-let serverOrClient = undefined;//"server"; // "client"
+let serverOrClient = undefined;
 let IsStartNow = false;
 
 let browserPageZoomPc = 100;
-// x3
-// let htmlTowers = document.querySelectorAll('.tower')
-
-// x1
-// let feedback = document.querySelector(".feedback")
-// let steps = document.querySelector(".steps")
-
-// let container = document.querySelectorAll(".container")[0]
 var baseContainer = document.getElementsByClassName("container")[0];
 
 var serverClientPanel = document.getElementsByClassName("serverclient-panel")[0];
@@ -112,7 +95,6 @@ class TowerOfHaoi {
 
 // Server Client Code
 function serverSetup(event){
-    // const serverIP = fetchYourOwnIP();
     const serverIP = "192.168.0.109";
 
     const ws = `ws://${serverIP}:8080`;
@@ -131,7 +113,6 @@ function serverSetup(event){
         console.log("server received message: " + JSON.stringify(message));
         io.emit(
             "message",
-            // `${socket.id.substr(0, 2)} said ${JSON.stringify(message)}`
             `${socket.id} said ${JSON.stringify(message)}`
         );
         });
@@ -152,9 +133,6 @@ function fetchYourOwnIP(cmd){
 }
 
 function clientSetup (){
-    // const socket = io("ws://localhost:8080");
-    // const socket = io("ws://192.168.0.109:8080");// point to server ip address
-
     const serverIP= clientEditBoxForServerIP.innerHTML;
     socket = io(`ws://${serverIP}:8080`);
 
@@ -168,8 +146,6 @@ function clientSetup (){
     
     // send out message using EMIT
     document.querySelector("button").onclick = () => {
-      // const text = document.querySelector("input").value;
-      // socket.emit("message", text);
       testjson= {"username":"king", "action": "move", "fromtower":1, "totower":2}
       socket.username="wakaka";
       socket.emit("message",testjson);
@@ -215,9 +191,6 @@ function addPlayer(username, IsMainPlayer){
         baseContainer.id = username;
     else{
         UiDuplicateTowerOfHanoi(username);
-        // players[username].tower1 = structuredClone(players[mainPlayerName].tower1);
-        // players[username].tower2 = structuredClone(players[mainPlayerName].tower2);
-        // players[username].tower3 = structuredClone(players[mainPlayerName].tower3);
         players[username].tower1 = [...players[mainPlayerName].tower1];
         players[username].tower2 = [...players[mainPlayerName].tower2];
         players[username].tower3 = [...players[mainPlayerName].tower3];
@@ -284,22 +257,7 @@ function getSidebySidePlayerName(){
 
 let sideBySidePlayerName ="";
 
-// sideBySidePlayerName = getSidebySidePlayerName();
-
 addPlayer(mainPlayerName, true);
-
-
-
-
-function deletePlayer(username){
-    // get container by id and remove
-    document.getElementById(username).remove();
-    if (players[username].typeOfPlayer === typeOfPlayer.sidebyside){
-        currentNumberOfSidebySidePlayers--;
-    }
-    delete players[username];    
-    currentNumberOfPlayers--
-}
 
 function generateTower(username, discNum){
     for (let index = discNum; index >= 1; index--) {
@@ -432,10 +390,6 @@ serverClientPanel.addEventListener('click', function(event){
         serverSetup();
     else
         clientSetup();
-    // H:\Other computers\My iMac\GoogleDrive\ga-project1-multiplayer\crowd-cheer-ii-6263.mp3
-    // const sound = new Audio();
-    // sound.src = "H:// Other computers// My iMac// GoogleDrive// ga-project1-multiplayer// crowd-cheer-ii-6263.mp3";
-    // sound.play();
 });
 
 addSidePlayerButton.addEventListener('click', function(event) {
@@ -470,7 +424,6 @@ startCountDownButton.addEventListener('click', function(event) {
 
 // this eventlistener is only for player or players(2) playing on one browser.
 document.addEventListener('keydown', function(event) {
-    // console.log(typeof (event.key)) // it is a string
     switch (event.key) {
         case '1':
         case '2':
@@ -592,7 +545,6 @@ function checkWin(username){
         console.log("YOU WIN!");
         UiUpdateFeedback(username, "YOU WIN!");
         AnnounceWinnerFreezeGame(username);
-        // app.say("You Win!")        
         return true;
     }
     else
@@ -600,8 +552,6 @@ function checkWin(username){
 }
 
 function AnnounceWinnerFreezeGame(username){
-    const message = {"username": username, "action":"win"}
-    // socket.emit("message", message);
     for (player in players){
         console.log(player)
         players[player].winner = username; // this only set the data in mainplayer's computer.            
@@ -617,11 +567,9 @@ function AnnounceWinnerFreezeGame(username){
 
 function UiCreateDisc(username){
     for (let index = 0; index < numberOfDisc; index++) {
-        // let basePlate = document.getElementsByClassName('base-plate');
         let tempDisc = document.createElement("div");
         tempDisc.classList.add('disc');  // so can use disc class at css
         tempDisc.style.backgroundColor = discColors[index];
-        // tempDisc.style.width = basePlate.style.width - (index * 10);
         tempDisc.style.width = 180 - ((index+1) * 20) + 'px';
 
         // initially on game start, only tower 1 will be loaded with disc, 
@@ -715,29 +663,16 @@ function blinkElement(element){
 
 function hanoiAlgo2(n, from_Tower, to_Tower, aux_Tower)
 {
-    // setTimeout( ()=>{
-    // console.log(`${n}, ${from_Tower}, ${to_Tower}, ${aux_Tower}`)
     if (n===0){
         console.log("return")
         return;
     }
-    // (async () => {
         hanoiAlgo2(n-1, from_Tower, aux_Tower, to_Tower);
-        // console.log(`move disc ${n} from ${from_Tower} to ${to_Tower}`);
         console.log(`move disc from ${from_Tower} to ${to_Tower}`);
         hanoiArray.push({from_Tower, to_Tower});
-        // document.dispatchEvent(new KeyboardEvent('keydown', {'key': from_Tower}));
-
-        // https://www.sitepoint.com/delay-sleep-pause-wait/
-        // // sleep2(1000);
-        // // await sleep(1000);
-        // document.dispatchEvent(new KeyboardEvent('keydown', {'key': to_Tower}));
         hanoiAlgo2(n-1, aux_Tower, to_Tower, from_Tower);
-    // })();
-    // }, 1000)
 }
 
-// hanoiAlgo1(numberOfDisc, towerNumber.tower1+1, towerNumber.tower3+1, towerNumber.tower2+1)
 hanoiAlgo2(numberOfDisc, towerNumber.tower1+1, towerNumber.tower3+1, towerNumber.tower2+1)
 console.log(hanoiArray)
 
@@ -747,12 +682,9 @@ console.log(hanoiArray)
 function startStopwatch(username) {
     if (!players[username].stopwatchInterval) {
         players[username].stopWatchStartTime = new Date().getTime() - players[username].elapsedPausedTime; // get the starting time by subtracting the elapsed paused time from the current time
-        // players[username].stopwatchInterval = setInterval(updateStopwatch(username), 1000); // update every second
         players[username].stopwatchInterval = setInterval(updateStopwatch, 1000, username); // update every second
     }
 }
-
-
 
 function stopStopwatch(username) {
     clearInterval(players[username].stopwatchInterval); // stop the interval
@@ -823,11 +755,9 @@ function resetGame(username){
 
 function resetEachPlayer(username){
         console.log("reset game")
-    // players[username].elapsedPausedTime=0;
     players[username].stopWatchStartTime=0;
     resetStopwatch(username);
 
-    // reset Steps Data and UI
     UiUpdateSteps(username, 0);
 
     for (let index = 0; index < players[username].tower1.length; index++) {
@@ -848,11 +778,16 @@ function resetEachPlayer(username){
     players[username].fromTower= -1;
     players[username].toTower=-1;
     players[username].showSolutionSteps = 0;
+    players[username].winner = "";
 
     generateTower(username, numberOfDisc);
     loadAllDiscToTower1(username);
     UiLoadDiscColor(username);
     UiUpdateFeedback(username, "Game Reset")
+    if (currentNumberOfPlayers>1)
+        IsStartNow = false;
+    else
+        IsStartNow = true;
 }
 
 
