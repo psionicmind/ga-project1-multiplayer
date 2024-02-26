@@ -63,3 +63,11 @@ There is no losing, timer keeps running.  User can reset to restart the game.
 [1] Tower of Hanoi Picture taken from https://www.tutorialspoint.com/data_structures_algorithms/tower_of_hanoi.htm, located in project proposal document.
 
 [2] stopwatch function by Ahmed Yasser, https://www.educative.io/answers/how-to-create-a-stopwatch-in-javascript 
+
+[3] Reference: https://www.youtube.com/watch?v=OUWFY1qY47Y by Adson Paulo Aug 30, 202
+
+[4] Duplication of Html Elements https://stackoverflow.com/questions/4427094/how-can-i-duplicate-a-div-onclick-event
+
+[5] Tower of Hanoi Algo https://www.geeksforgeeks.org/c-program-for-tower-of-hanoi/ 
+# Resource
+- Sound Effect https://pixabay.com/sound-effects
