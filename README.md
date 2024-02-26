@@ -29,9 +29,15 @@ This game can be solved in the optimal solution using iterative method, Recursiv
 
 # Getting Started
 The control keys on the keyboard are : 
+player 1
 1) keypad number 1
 2) keypad number 2
 3) keypad number 3
+
+player 2
+4) z
+5) x
+6) c
 
 # Game Logic
 - initial keypress of any control keys will be indicated as the origin tower you want to move FROM.
@@ -45,8 +51,7 @@ The control keys on the keyboard are :
 - if origin tower is empty, pressing the tower number will prompt an error message.
 
 # Win Lose
-To win, you need to transfer all disc from tower 1 to any other tower, with the disc stacked smallest at the very top to the largest disc at the very bottom.
-There is no losing, timer keeps running.  User can reset to restart the game.
+To win, you need to transfer all disc from tower 1 to any other tower, with the disc stacked smallest at the very top to the largest disc at the very bottom.  once a player wins the game, competition ends.
 
 # Planned future enhancements (icebox items)
 - beautify the user interface
@@ -58,6 +63,7 @@ There is no losing, timer keeps running.  User can reset to restart the game.
 # Challenges
 1) using reference code ethically
 2) explaining a difficult algorithm
+3) github usage among different devices
 
 # Reference
 [1] Tower of Hanoi Picture taken from https://www.tutorialspoint.com/data_structures_algorithms/tower_of_hanoi.htm, located in project proposal document.
